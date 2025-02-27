@@ -1,0 +1,111 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Source {
+  id        Int      @id @default(autoincrement())
+  title     String?
+  content   String
+  createdAt DateTime @default(now())
+  testsetId Int
+  testset   Testset  @relation(fields: [testsetId], references: [id])
+}
+
+model User {
+  id              Int              @id @default(autoincrement())
+  email           String           @unique
+  admin           Boolean          @default(false)
+  createdAt       DateTime         @default(now())
+  annotationLists AnnotationList[]
+  feedback        Feedback[]
+  prompts         Prompt[]
+  testsets        Testset[]
+}
+
+model Prompt {
+  versionId       Int               @id @default(autoincrement())
+  promptId        String            @default(uuid())
+  title           String
+  content         String
+  model           String
+  variance        Int
+  createdAt       DateTime          @default(now())
+  description     String?
+  createdById     Int?
+  public          Boolean?
+  generatedOutput GeneratedOutput[]
+  createdBy       User?             @relation(fields: [createdById], references: [id])
+  annotationLists AnnotationList[]  @relation("AnnotationListPrompts")
+}
+
+model Testset {
+  id          Int      @id @default(autoincrement())
+  title       String
+  description String?
+  testable    Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  createdById Int?
+  public      Boolean?
+  sources     Source[]
+  createdBy   User?    @relation(fields: [createdById], references: [id])
+}
+
+model AnnotationList {
+  id              Int               @id @default(autoincrement())
+  title           String
+  description     String?
+  createdAt       DateTime          @default(now())
+  testsetName     String
+  testset         String[]
+  runs            Int?
+  createdById     Int?
+  public          Boolean?
+  createdBy       User?             @relation(fields: [createdById], references: [id])
+  generatedOutput GeneratedOutput[]
+  prompts         Prompt[]          @relation("AnnotationListPrompts")
+}
+
+model GeneratedOutput {
+  id               Int            @id @default(autoincrement())
+  content          String
+  createdAt        DateTime       @default(now())
+  versionId        Int
+  annotationListId Int
+  source           String
+  feedbacks        Feedback[]
+  annotationList   AnnotationList @relation(fields: [annotationListId], references: [id])
+  version          Prompt         @relation(fields: [versionId], references: [versionId])
+  logs             Log[]
+}
+
+model Log {
+  id                Int              @id @default(autoincrement())
+  msg               String
+  status            String
+  start             Int?
+  end               Int?
+  attempt           Int?
+  response          String?
+  call              String?
+  createdAt         DateTime         @default(now())
+  generatedOutputId Int?
+  generatedOutput   GeneratedOutput? @relation(fields: [generatedOutputId], references: [id])
+}
+
+model Feedback {
+  id                   Int             @id @default(autoincrement())
+  reviewEffortScale    Int
+  feedbackText         String?
+  userId               Int
+  generatedOutputId    Int
+  createdAt            DateTime        @default(now())
+  feedbackTextNegative String?
+  feedbackTextPositive String?
+  generatedOutput      GeneratedOutput @relation(fields: [generatedOutputId], references: [id])
+  user                 User            @relation(fields: [userId], references: [id])
+}

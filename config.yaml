@@ -1,0 +1,40 @@
+isEnabled: true
+name: promptpilot
+image: node:20-bullseye-slim
+install:
+  command: |
+    apt-get update && apt-get install -y libssl1.1 && \
+    yarn
+build:
+    command: yarn build
+run:
+    command: yarn run express:start
+envs:
+    - name: DATABASE_URL
+      value: "postgresql://postgres:$(DATABASE_PASSWORD)@$(DATABASE_ADDRESS)/postgres"
+    - name: OPENAI_API_KEY
+      value: sm://{{.projectId}}/prompt-results-evaluator
+    - name: ANTHROPIC_API_KEY
+      value: sm://{{.projectId}}/prompt-pilot-anthropic-api-key
+    - name: GOOGLE_PROJECT
+      value: '{{.projectId}}'
+    - name: AILAB_MODEL_KEY
+      value: sm://{{.projectId}}/prompt-pilot-nawe-pipeline-api-key
+    - name: AILAB_MODEL_BASE_URL
+      value: https://aiditor-as-a-agent.{{.projectId}}.de/
+            
+settings:
+  projectName: promptpilot
+  type: service
+  port: 3003
+  security:
+    allowedGroups:
+      - br
+    login: true
+    forwardAuth: true
+    type: token
+    enableCors: false
+  database:
+      frontend: true
+      type: postgresql
+      size: 5

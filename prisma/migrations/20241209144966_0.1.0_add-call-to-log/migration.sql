@@ -1,0 +1,1 @@
+ALTER TABLE "Log" ADD COLUMN     "call" TEXT;

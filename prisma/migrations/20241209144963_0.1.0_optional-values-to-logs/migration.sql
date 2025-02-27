@@ -1,0 +1,4 @@
+-- Change column types to allow NULL values
+ALTER TABLE "Log" ALTER COLUMN "start" DROP NOT NULL;
+ALTER TABLE "Log" ALTER COLUMN "end" DROP NOT NULL;
+ALTER TABLE "Log" ALTER COLUMN "attempt" DROP NOT NULL;

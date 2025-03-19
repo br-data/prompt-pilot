@@ -139,7 +139,6 @@ export const SourceList: React.FC<{ refreshTrigger: number; testsetId: number }>
                     closeModal();
                     setIsModalOpen(false);
                 }}
-                // onCancel={() => handleDelete(selectedId)}
                 okText={'Speichern'}
                 cancelButtonProps={{ style: { display: 'none' } }}
                 width={1000}

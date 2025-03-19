@@ -9,7 +9,6 @@ import { AverageEffortByVersion } from './types.tests';
 import { PromptResultTabs } from '../../components/testsPage/PromptResultTabs';
 import { ExclamationCircleOutlined } from '@ant-design/icons';
 import { useModels } from '../../hooks/useModels';
-const { Content } = Layout;
 
 export interface UpdateFeedback {
     id: number;
@@ -30,22 +29,6 @@ export const TestDetails: React.FC = () => {
     const { confirm } = Modal;
     const navigate = useNavigate();
     const { models } = useModels();
-
-
-    const countUniqueUserIds = (data: AnnotationListType) => {
-        const userIds = new Set();
-        data.generatedOutput.forEach((output) => {
-            if (Array.isArray(output.feedbacks)) {
-                output.feedbacks.forEach((feedback) => {
-                    if (feedback.userId !== undefined) {
-                        userIds.add(feedback.userId);
-                    }
-                });
-            }
-        });
-
-        return userIds.size;
-    };
 
     const calculateAverageReviewEffortScaleByVersion = (data: AnnotationListType) => {
         const versionData: Record<number, { totalEffort: number; count: number }> = {};
@@ -72,20 +55,18 @@ export const TestDetails: React.FC = () => {
 
         const averageEffortByVersion: Record<number, VersionStats> = {};
 
-        // Alle Versionen initialisieren (auch die ohne Feedbacks)
         data.prompts.forEach((prompt) => {
             averageEffortByVersion[prompt.versionId] = {
-                averageEffort: null, // Standardwert für keine Feedbacks
+                averageEffort: null,
                 title: prompt.title
             };
         });
 
-        // Durchschnitt für Versionen berechnen, die Feedbacks haben
         Object.entries(versionData).forEach(([id, { totalEffort, count }]) => {
             const versionId = Number(id);
             const average = totalEffort / count;
 
-            averageEffortByVersion[versionId].averageEffort = average; // Überschreiben, wenn Feedbacks existieren
+            averageEffortByVersion[versionId].averageEffort = average;
         });
 
         return averageEffortByVersion;

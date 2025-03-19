@@ -11,7 +11,7 @@ export const submitForm = async (
     await form
         .validateFields()
         .then((values) => {
-            const { variance, content, model, platform, title, createdById, public: publicAvailable } = values;
+            const { variance, public: publicAvailable } = values;
             const varianceInt = Math.round(variance * 10);
 
             const payload = {

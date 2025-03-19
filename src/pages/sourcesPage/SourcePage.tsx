@@ -10,16 +10,8 @@ import TextArea from 'antd/es/input/TextArea';
 import { User } from '../../types/Types';
 import { UserContext } from '../../App';
 
-interface TestsetListData {
-    title: string;
-    sources: number[] | null;
-    id: number;
-    createdAt: Date;
-    description: string;
-}
 
 export const SourcePage: React.FC = () => {
-    const userData = useContext(UserContext);
     const [searchParams] = useSearchParams();
     const testsetIdParam = searchParams.get('id');
     const testsetId = parseInt(testsetIdParam || '');
@@ -41,42 +33,6 @@ export const SourcePage: React.FC = () => {
 
     const handleCancel = () => {
         setIsModalOpen(false);
-    };
-
-    const submitMetaForm = () => {
-        sourcesMetaForm
-            .validateFields()
-            .then((values) => {
-                if (!testsetId) {
-                    console.error('Ungültige Testset-ID');
-                    messageApi.error('Ungültige Testset-ID');
-                    return;
-                }
-                const payload = { ...values, testsetId: testsetId };
-
-                fetch(baseUrl + '/source', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                })
-                    .then((response) => {
-                        if (!response.ok) {
-                            throw new Error('Fehler beim Erstellen der Quelle');
-                        }
-                        return response.json();
-                    })
-                    .then((data) => {
-                        sourcesForm.resetFields();
-                        setIsModalOpen(false);
-                        setRefreshTrigger((prev) => prev + 1);
-                    })
-                    .catch((error) => {
-                        console.error('Fehler:', error);
-                    });
-            })
-            .catch((info) => {
-                console.log('Validation failed:', info);
-            });
     };
 
     const submitForm = () => {

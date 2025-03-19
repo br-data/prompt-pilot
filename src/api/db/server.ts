@@ -918,8 +918,6 @@ async function generateWithOpenAI(model: string, prompt: string, variance: numbe
 }
 
 async function generateWithAiLabModel(model: string, prompt: string, variance: number, source: string) {
-    // for DEBUG
-    // const baseURL = `https://aiditor-as-a-agent.brdata-dev.de/exceptions/retry_exception`;
     const baseURL = `${process.env.AILAB_MODEL_BASE_URL}openai/deployments/${model}/chat/completions`;
 
     try {

@@ -27,8 +27,6 @@ export const PromptList: React.FC<PromptListProps> = ({ refreshTrigger, setRefre
     const [publicVisible, setPublicVisible] = useState<boolean | undefined>(true);
     const { user, isLoading } = useContext(UserContext);
     const { confirm } = Modal;
-    const navigate = useNavigate();
-
     const [promptListData, setPromptListData] = useState<Prompt[]>([]);
     const [displayedPromptListData, setDisplayedPromptListData] = useState<Prompt[]>([]);
     const [createdBy, setCreatedBy] = useState<User>();
@@ -40,29 +38,6 @@ export const PromptList: React.FC<PromptListProps> = ({ refreshTrigger, setRefre
         const fetchData = async () => {
             try {
                 const response = await fetch(`${baseUrl}/prompt`);
-                if (!response.ok) {
-                    throw new Error('Fehler beim Abrufen der Prompts');
-                }
-                const data = (await response.json()) as Prompt[];
-                setPromptListData(data);
-
-                const filteredData = Object.values(
-                    data.reduce((acc: Record<string, Prompt>, curr: Prompt) => {
-                        if (curr.createdBy?.id === user?.userId || curr.public === true) {
-                            acc[curr.promptId] = curr;
-                        }
-                        return acc;
-                    }, {})
-                );
-                setDisplayedPromptListData(filteredData);
-            } catch (error) {
-                console.error('Fehler:', error);
-            }
-        };
-
-        const fetchModels = async () => {
-            try {
-                const response = await fetch(`${baseUrl}/models`);
                 if (!response.ok) {
                     throw new Error('Fehler beim Abrufen der Prompts');
                 }

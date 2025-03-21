@@ -9,7 +9,7 @@
     "migrate:deploy": "npx prisma migrate deploy",
     "prisma:generate": "npx prisma generate",
     "start": "yarn prisma:generate && webpack serve --mode development",
-    "express:start": "yarn prisma:generate && npx ts-node src/api/db/server.ts",
+    "express:start": "yarn prisma:generate && npx ts-node src/api/db/index.ts",
     "build": "webpack --mode production",
     "serve:build": "yarn run build && serve build",
     "precommit": "pretty-quick --staged"

@@ -8,12 +8,6 @@ import { getBaseUrl } from './utils/getBaseUrl';
 import { AppFooter } from './components/Footer/Footer';
 import { Layout } from 'antd';
 
-const PageWrapper = styled.div`
-    display: flex;
-    flex-direction: column;
-    min-height: 100vh;
-`;
-
 interface UserContextType {
     userId: number;
     firstName: string;
@@ -54,7 +48,7 @@ export const App: React.FC = () => {
 
     useEffect(() => {
         async function fetchAuthUser() {
-            const response = await fetch(`${baseUrl}/userfromxauth`);
+            const response = await fetch(`${baseUrl}/user/fromxauth`);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }

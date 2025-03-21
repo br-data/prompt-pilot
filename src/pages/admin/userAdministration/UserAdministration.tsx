@@ -52,7 +52,7 @@ export const UserAdministration: React.FC = () => {
 
     async function fetchUsers() {
         try {
-            const response = await fetch(`${baseUrl}/users`);
+            const response = await fetch(`${baseUrl}/user`);
             if (!response.ok) {
                 throw new Error(`HTTP-Fehler: ${response.status}`);
             }

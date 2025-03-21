@@ -27,7 +27,7 @@ Before starting the project, ensure you have the following tools installed:
 
 The application requires a `.env` file with the correct environment variables to connect to the database and configure other important settings.
 
-Create a `.env` file in the root directory and add the required entries as suggested in `.env.template`. If you want to use Gemini, also add your Google Project ID in `server.js`.
+Create a `.env` file in the root directory and add the required entries as suggested in `.env.template`.
 
 ### Steps to Start the Application
 
